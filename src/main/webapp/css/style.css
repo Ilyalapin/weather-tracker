@@ -1,0 +1,80 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+.header {
+    font-family: 'Roboto', sans-serif;
+    background-image: url(../img/sign.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+
+}
+
+.btn-group-vertical {
+    margin-top: 200px;
+    justify-content: center;
+    background-color: white;
+    border-radius: 10px;
+    margin-left: 90px;
+    padding: 50px 30px;
+}
+.label-Sign {
+    width: 100%;
+    font-weight: 700;
+    font-size: 30px;
+    color:black;
+    text-align: center;
+}
+.btn-sign {
+    width: 100%;
+    text-align: center;
+    background-color: #1F75FE;
+}
+
+.input-login,
+.input-password,
+.btn-sign {
+    margin-bottom: 30px;
+    border-radius: 8px;
+    border: 1px solid gray;
+    color:black;
+    font-weight: bold;
+    font-weight: 400;
+    font-size: 20px;
+    width: 100%;
+}
+
+/* WEATHER TRACKER */
+.header2 {
+    margin-top: 30px;
+
+}
+.weather-tracker {
+    color: #1F75FE;
+}
+.btn-search {
+    background-color:  #1F75FE;
+}
+.col-md-4 {
+    text-align: center;
+
+}
+.btn-toolbar {
+    border-radius: 8px;
+    /* width: 51%; */
+}
+.search,
+.btn-search,
+.btn-sign-out {
+    border-radius: 8px;
+    border: 1px solid gray;
+    font-weight: 400;
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.btn-sign-out,
+.btn-search {
+    background-color:  #1F75FE;
+    color: white;
+}

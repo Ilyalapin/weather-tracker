@@ -9,9 +9,9 @@ public class ValidationUtil {
         if (userDto.getLogin() == null || userDto.getLogin().isEmpty()) {
             throw new InvalidParameterException("Missing parameter - name");
         }
-        if (!userDto.getLogin().matches("^[0-9A-Za-z]{3,10}$")) {
+        if (!userDto.getLogin().matches("^[0-9A-Za-z]{3,20}$")) {
             throw new InvalidParameterException("Invalid parameter: login must contain only letters and numbers" +
-                    " and contain from 3 to 10 characters");
+                    " and contain from 3 to 20 characters");
         }
         if (userDto.getPassword() == null || userDto.getPassword().isEmpty()) {
             throw new InvalidParameterException("Missing parameter - password");

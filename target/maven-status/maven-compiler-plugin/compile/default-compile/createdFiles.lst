@@ -1,0 +1,3 @@
+com\weather_tracker\config\SpringMvcDispatcerServletInitializer.class
+com\weather_tracker\config\SpringConfig.class
+com\weather_tracker\controller\HelloController.class

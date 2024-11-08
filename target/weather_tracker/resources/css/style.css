@@ -1,13 +1,13 @@
 body {
     font-family: 'Roboto', sans-serif;
 }
+
 .header {
     font-family: 'Roboto', sans-serif;
     background-image: url(../img/sign.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
-
 }
 
 .btn-group-vertical {
@@ -18,13 +18,15 @@ body {
     margin-left: 90px;
     padding: 50px 30px;
 }
+
 .label-Sign {
     width: 100%;
     font-weight: 700;
     font-size: 30px;
-    color:black;
+    color: black;
     text-align: center;
 }
+
 .btn-sign {
     width: 100%;
     text-align: center;
@@ -37,8 +39,7 @@ body {
     margin-bottom: 30px;
     border-radius: 8px;
     border: 1px solid gray;
-    color:black;
-    font-weight: bold;
+    color: black;
     font-weight: 400;
     font-size: 20px;
     width: 100%;
@@ -49,20 +50,24 @@ body {
     margin-top: 30px;
 
 }
+
 .weather-tracker {
     color: #1F75FE;
 }
+
 .btn-search {
-    background-color:  #1F75FE;
+    background-color: #1F75FE;
 }
+
 .col-md-4 {
     text-align: center;
 
 }
+
 .btn-toolbar {
     border-radius: 8px;
-    /* width: 51%; */
 }
+
 .search,
 .btn-search,
 .btn-sign-out {
@@ -75,6 +80,6 @@ body {
 
 .btn-sign-out,
 .btn-search {
-    background-color:  #1F75FE;
+    background-color: #1F75FE;
     color: white;
 }

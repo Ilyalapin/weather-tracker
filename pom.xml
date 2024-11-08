@@ -16,9 +16,8 @@
 
       <flyway.user>postgres</flyway.user>
       <flyway.password>postgres62</flyway.password>
-      <flyway.schemas>weather</flyway.schemas>
       <flyway.url>jdbc:postgresql://localhost:5432/weather</flyway.url>
-      <flyway.locations>classpath:db/migration</flyway.locations>
+      <flyway.locations>filesystem:src/main/resources/db/migration/</flyway.locations>
       <flyway.driver>org.postgresql.Driver</flyway.driver>
   </properties>
   <dependencies>
@@ -113,7 +112,7 @@
       <version>2.0.7</version>
     </dependency>
 
-    <!--        Хеширование пароля-->
+      <!--        Хеширование пароля-->
     <dependency>
       <groupId>org.mindrot</groupId>
       <artifactId>jbcrypt</artifactId>
@@ -122,18 +121,28 @@
 
       <dependency>
           <groupId>org.flywaydb</groupId>
-          <artifactId>flyway-core</artifactId>
+          <artifactId>flyway-maven-plugin</artifactId>
           <version>10.20.0</version>
       </dependency>
 
-<!--      <dependency>-->
-<!--          <groupId>org.flywaydb</groupId>-->
-<!--          <artifactId>flyway-maven-plugin</artifactId>-->
-<!--          <version>10.20.0</version>-->
-<!--      </dependency>-->
+      <dependency>
+          <groupId>org.flywaydb</groupId>
+          <artifactId>flyway-database-postgresql</artifactId>
+          <version>10.20.0</version>
+          <scope>runtime</scope>
+      </dependency>
 
+      <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+          <version>2.18.0</version>
+      </dependency>
 
-
+      <dependency>
+          <groupId>org.modelmapper</groupId>
+          <artifactId>modelmapper</artifactId>
+          <version>3.2.1</version>
+      </dependency>
 
 
 
@@ -141,12 +150,11 @@
   <build>
     <finalName>weather_tracker</finalName>
       <plugins>
-<!--          <plugin>-->
-<!--              <groupId>org.flywaydb</groupId>-->
-<!--              <artifactId>flyway-maven-plugin</artifactId>-->
-<!--              <version>10.20.0</version>-->
-<!--          </plugin>-->
-
+          <plugin>
+              <groupId>org.flywaydb</groupId>
+              <artifactId>flyway-maven-plugin</artifactId>
+              <version>10.20.0</version>
+          </plugin>
       </plugins>
 
   </build>

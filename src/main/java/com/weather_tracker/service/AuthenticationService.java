@@ -1,77 +1,171 @@
-//package com.weather_tracker.service;
-//
-//import com.example.weather.commons.exception.NotFoundException;
-//import com.example.weather.dao.SessionDao;
-//import com.example.weather.dao.UserDao;
-//import com.example.weather.dto.UserRequestDto;
-//import com.example.weather.entity.Session;
-//import com.example.weather.entity.User;
-//import jakarta.servlet.http.Cookie;
-//import org.mindrot.jbcrypt.BCrypt;
-//
-//import java.time.LocalDateTime;
-//import java.util.UUID;
-//
-//import static com.example.weather.commons.util.MappingUtil.convertToEntity;
-//
-//
-//public class AuthenticationService {
-//
-//private final UserDao userDao = new UserDao();
-//private final SessionDao sessionDao = new SessionDao();
-//
-//
-//    private static String hashPassword(String password) {
-//        return BCrypt.hashpw(password, BCrypt.gensalt());
-//    }
-//
-//
-//    public User add(UserRequestDto userDto) {
-//        String hashedPassword = hashPassword(userDto.getPassword());
-//        userDto.setPassword(hashedPassword);
-//
-//        return userDao.add(convertToEntity(userDto));
-//    }
-//
-//
-//    public User getByLogin(String login) {
-//        User user = userDao.getByLogin(login)
-//                .orElseThrow(() -> new NotFoundException("User with login: " + login + " not found"));
-//        return user;
-//    }
-//
-//
-//    public UUID add(User user) {
-//        UUID uuid = UUID.randomUUID();
-//        LocalDateTime expiresAt = LocalDateTime.now().plusHours(24);
-//        Session session = new Session(uuid,user, expiresAt);
-//        sessionDao.add(session);
-//        return uuid;
-//    }
-//
-//
-//public Session getById(UUID uuid) {
-//        Session session = sessionDao.getById(uuid)
-//                .orElseThrow(() -> new NotFoundException("Session with uuid: " + uuid + " not found"));
-//        return session;
-//}
-//
-//    public Cookie get(Cookie[] cookies) {
-//        if (cookies == null || cookies.length < 1) {
-//            throw new NotFoundException("Cookie list is empty");
-//        }
-//            for (Cookie cookie : cookies) {
-//                if ("sessionId".equals(cookie.getName())) {
-//                    return cookie;
-//                }
-//            }
-//            throw new NotFoundException("Cookie not found");
-//
-//
-//    }
-//
-//
-//
-//
-//
-//}
+package com.weather_tracker.service;
+
+import com.weather_tracker.commons.exception.DataBaseException;
+import com.weather_tracker.commons.exception.InvalidParameterException;
+import com.weather_tracker.commons.exception.NotFoundException;
+import com.weather_tracker.commons.util.MappingUtil;
+import com.weather_tracker.dao.SessionDao;
+import com.weather_tracker.dao.UserDao;
+import com.weather_tracker.dto.UserRequestDto;
+import com.weather_tracker.entity.Session;
+import com.weather_tracker.entity.User;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
+import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+
+@Slf4j
+@Component
+public class AuthenticationService {
+
+    private final UserDao userDao;
+    private final SessionDao sessionDao;
+
+    @Autowired
+    public AuthenticationService(UserDao userDao, SessionDao sessionDao) {
+        this.userDao = userDao;
+        this.sessionDao = sessionDao;
+    }
+
+
+    private static String hashPassword(String password) {
+        if (password == null || password.isEmpty()) {
+            log.error("Password is null or empty");
+        }
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+
+    public boolean isChecked(String password, String hashedPassword) {
+        if (password == null || hashedPassword == null) {
+            log.error("Password or hashed password is null");
+            return false;
+        }
+        return BCrypt.checkpw(password, hashedPassword);
+    }
+
+
+    public User save(UserRequestDto userDto) {
+        String hashedPassword;
+        hashedPassword = hashPassword(userDto.getPassword());
+        userDto.setPassword(hashedPassword);
+
+        try {
+            return userDao.save(MappingUtil.convertToEntity((userDto)));
+        } catch (ConstraintViolationException e) {
+            throw new InvalidParameterException("User with login " + userDto.getLogin() + " already exists");
+        }
+    }
+
+
+    public void deleteAccount(Cookie[] cookies) {
+        String sessionId = findSessionId(cookies);
+        Session session = findById(UUID.fromString(sessionId));
+        User user = session.getUserId();
+        try {
+            userDao.delete(user);
+            deleteSession(sessionId);
+        } catch (NotFoundException e) {
+            throw new NotFoundException("User with login " + user.getLogin() + " not found");
+        }
+    }
+
+
+    public User findByPersonalData(String login, String password) {
+
+        log.info("Attempting to find user with login: {}", login);
+        User user = userDao.findByLogin(login)
+                .orElseThrow(() -> {
+                    log.error("User with login: {} not found", login);
+                    return new NotFoundException("Incorrect login or password");
+                });
+        log.info("User found successfully: {}", user);
+
+        if (!(isChecked(password, user.getPassword()))) {
+            throw new NotFoundException("Incorrect password");
+        }
+        return user;
+    }
+
+    //*** Session ***
+    public UUID saveSession(User user) {
+        UUID uuid = UUID.randomUUID();
+        LocalDateTime expiresAt = LocalDateTime.now().plusHours(24);
+        Session session = new Session(uuid, user, expiresAt);
+        try {
+            sessionDao.save(session);
+        } catch (DataBaseException e) {
+            throw new DataBaseException("Error saving session");
+        }
+        return uuid;
+    }
+
+
+    public Session findById(UUID uuid) {
+        return sessionDao.findById(uuid)
+                .orElseThrow(() -> new NotFoundException("Session with uuid: " + uuid + " not found"));
+    }
+
+
+    public void deleteSession(String sessionId) {
+        sessionDao.deleteById(UUID.fromString(sessionId));
+    }
+
+
+    public String findSessionId(Cookie[] cookies) {
+        log.trace("Attempting to find cookies");
+        if (cookies != null) {
+
+            for (Cookie cookie : cookies) {
+                if ("sessionId".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+            log.info("Session Id found successfully");
+        }
+        throw new NotFoundException("Cookies not found");
+    }
+
+
+    public void signOut(Cookie[] cookies) {
+        String sessionId = findSessionId(cookies);
+        log.info("Session id:{} found successfully", sessionId);
+
+        deleteSession(sessionId);
+
+    }
+
+
+    public String findUserName(Cookie[] cookies) {
+        String sessionId = findSessionId(cookies);
+        Session session = findById(UUID.fromString(sessionId));
+        User user = session.getUserId();
+        return user.getLogin();
+    }
+
+
+    public boolean isCookiesValid(Cookie[] cookies, HttpServletResponse response) throws IOException {
+        boolean isAuthenticated = false;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("sessionId".equals(cookie.getName()) && cookie.getValue() != null) {
+                    isAuthenticated = true;
+                    break;
+                }
+            }
+        }
+        if (!isAuthenticated) {
+            response.sendRedirect("/sign-in");
+        }
+        return isAuthenticated;
+    }
+}

@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -31,7 +34,7 @@ public class User {
         this.password = password;
     }
 
-//    @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
+//    @OneToMany(mappedBy = "user_id", orphanRemoval = true, fetch = FetchType.EAGER)
 //    private List<Location> locations = new ArrayList<>();
 
 }

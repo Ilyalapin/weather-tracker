@@ -54,8 +54,7 @@ public class AuthenticationService {
 
 
     public User save(UserRequestDto userDto) {
-        String hashedPassword;
-        hashedPassword = hashPassword(userDto.getPassword());
+        String hashedPassword = hashPassword(userDto.getPassword());
         userDto.setPassword(hashedPassword);
 
         try {
@@ -116,13 +115,17 @@ public class AuthenticationService {
 
 
     public void deleteSession(String sessionId) {
-        sessionDao.deleteById(UUID.fromString(sessionId));
+        try {
+            sessionDao.deleteById(UUID.fromString(sessionId));
+        } catch (NotFoundException e) {
+            throw new NotFoundException("Session with uuid: " + sessionId + " not found");
+        }
     }
 
 
     public String findSessionId(Cookie[] cookies) {
         log.trace("Attempting to find cookies");
-        if (cookies != null) {
+        if ((cookies != null) && (cookies.length > 0)) {
 
             for (Cookie cookie : cookies) {
                 if ("sessionId".equals(cookie.getName())) {

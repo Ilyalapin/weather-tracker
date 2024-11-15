@@ -7,7 +7,7 @@ import com.weather_tracker.dto.UserRequestDto;
 public class ValidationUtil {
     public static void validate(UserRequestDto userDto) {
         if (userDto.getLogin() == null || userDto.getLogin().isEmpty()) {
-            throw new InvalidParameterException("Missing parameter - name");
+            throw new InvalidParameterException("Missing parameter - login");
         }
         if (!userDto.getLogin().matches("^[0-9A-Za-z]{3,20}$")) {
             throw new InvalidParameterException("Invalid parameter: login must contain only letters and numbers" +
@@ -24,6 +24,5 @@ public class ValidationUtil {
                     " one special character " +
                     "and contain from 6 to 20 characters");
         }
-
     }
 }

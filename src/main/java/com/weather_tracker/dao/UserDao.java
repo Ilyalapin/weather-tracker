@@ -1,5 +1,6 @@
 package com.weather_tracker.dao;
 
+import com.weather_tracker.commons.exception.NotFoundException;
 import com.weather_tracker.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
@@ -33,6 +34,7 @@ public class UserDao extends BaseDao<User> {
 
         if (user == null) {
             log.error("Invalid parameter: user not found");
+            return Optional.empty();
         } else {
             log.info("User with login:{} retrieved from database", login);
         }

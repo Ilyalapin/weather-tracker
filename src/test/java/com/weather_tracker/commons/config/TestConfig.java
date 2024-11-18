@@ -1,12 +1,8 @@
 package com.weather_tracker.commons.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -28,12 +24,10 @@ public class TestConfig {
         return dataSource;
     }
 
-
     @Bean
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
-
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
@@ -43,7 +37,6 @@ public class TestConfig {
         return properties;
     }
 
-
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
@@ -52,7 +45,6 @@ public class TestConfig {
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
-
 
     @Bean
     public PlatformTransactionManager hibernateTransactionManager() {

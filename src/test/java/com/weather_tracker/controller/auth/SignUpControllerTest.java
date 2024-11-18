@@ -2,8 +2,6 @@ package com.weather_tracker.controller.auth;
 
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
-import com.weather_tracker.dto.UserRequestDto;
-import com.weather_tracker.service.auth.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -16,53 +14,34 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestConfig.class, WebAppInitializer.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @WebAppConfiguration
-public class SignInControllerTest {
-
+public class SignUpControllerTest {
     private final WebApplicationContext wac;
-    private UserService userService;
     private MockMvc mockMvc;
 
-
     @Autowired
-    public SignInControllerTest(WebApplicationContext wac, UserService userService) {
+    public SignUpControllerTest(WebApplicationContext wac) {
         this.wac = wac;
-        this.userService = userService;
     }
-
 
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-        userService = wac.getBean(UserService.class);
     }
-
-    @Test
-    void signInShouldOpenToSignInPage() throws Exception {
-        mockMvc.perform(get("/sign-in"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
 
     @Test
     void shouldRedirectToWeatherTrackerIfPersonalDataIsValid() throws Exception {
         String login = "User";
         String password = "Password!123";
 
-        UserRequestDto userDto = new UserRequestDto(login, password);
-        userService.save(userDto);
-
-        mockMvc.perform(post("/sign-in")
+        mockMvc.perform(post("/sign-up")
                         .param("login", login)
                         .param("password", password))
                 .andDo(print())
@@ -71,17 +50,22 @@ public class SignInControllerTest {
     }
 
     @Test
-    void shouldReturnViewSignInIfUserNotFound() throws Exception {
-        String login = "UseR";
-        String password = "Password!123";
-        String errorMessage = "User not found";
+    void shouldReturnViewSignUpIfPersonalDataIsInvalid() throws Exception {
+        String login = "User";
+        String password = "Password";
+        String errorMessage = "Invalid parameter: password must contain: " +
+                "at least one number, " +
+                "one lowercase letter," +
+                " one uppercase letter, " +
+                "one special character" +
+                " and contain from 6 to 20 characters";
 
-        mockMvc.perform(post("/sign-in")
+        mockMvc.perform(post("/sign-up")
                         .param("login", login)
                         .param("password", password))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(view().name("sign-in"))
+                .andExpect(view().name("sign-up"))
                 .andExpect(model().attribute("error", errorMessage));
     }
 }

@@ -17,7 +17,7 @@ public class ValidationUtil {
             throw new InvalidParameterException("Missing parameter - password");
         }
         if (!userDto.getPassword().matches("^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^0-9A-Za-z]).{6,20}$")) {
-            throw new InvalidParameterException("Invalid parameter: password must contain: " +
+            throw new InvalidParameterException("Invalid parameter: password must contain:" +
                     " at least one number," +
                     " one lowercase letter," +
                     " one uppercase letter," +

@@ -1,22 +1,24 @@
 package com.weather_tracker.controller.auth;
 
-import com.weather_tracker.controller.BaseController;
-import com.weather_tracker.service.AuthenticationService;
+import com.weather_tracker.service.auth.CookieService;
+import com.weather_tracker.service.auth.SessionService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Slf4j
 @Controller
-public class DeleteController extends BaseController {
-    private static final Logger log = LoggerFactory.getLogger(DeleteController.class);
+public class DeleteController {
+    protected SessionService sessionService;
+    protected CookieService cookieService;
 
-    public DeleteController(AuthenticationService authenticationService) {
-        super(authenticationService);
+    public DeleteController(SessionService sessionService, CookieService cookieService) {
+        this.sessionService = sessionService;
+        this.cookieService = cookieService;
     }
 
     @GetMapping("/delete")
@@ -26,12 +28,12 @@ public class DeleteController extends BaseController {
 
 
     @PostMapping("/delete")
-    public String deleteAccount(HttpServletRequest request, HttpServletResponse response) {
+    public String deleteAccount(@CookieValue("sessionId") String sessionId, HttpServletRequest req, HttpServletResponse resp) {
 
-        authenticationService.deleteAccount(request.getCookies());
+        sessionService.deleteAccount(sessionId);
         log.info("Account delete successfully");
-        deleteCookie(response, request.getCookies());
+        cookieService.delete(sessionId, req.getCookies(), resp);
 
-        return "sign-in";
+        return "redirect:/sign-in";
     }
 }

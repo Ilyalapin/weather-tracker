@@ -48,7 +48,7 @@ public class CookieServiceTest {
 
         assertEquals("sessionId", addedCookie.getName());
         assertEquals(sessionId.toString(), addedCookie.getValue());
-        assertEquals(60 * 5, addedCookie.getMaxAge());
+        assertEquals(60, addedCookie.getMaxAge());
     }
 
     @Test
@@ -63,16 +63,5 @@ public class CookieServiceTest {
 
         assertEquals(sessionId.toString(), sessionIdCookie.getValue());
         assertEquals(0, sessionIdCookie.getMaxAge());
-    }
-
-    @Test
-    void shouldReturnTrueIfCookieExists() {
-        Cookie sessionIdCookie = new Cookie("sessionId", sessionId.toString());
-        Cookie[] cookies = {
-                new Cookie("someCookie", "value"),
-                sessionIdCookie,
-                new Cookie("anotherCookie", "value")
-        };
-        assertTrue(cookieService.isValid(sessionId.toString(), cookies));
     }
 }

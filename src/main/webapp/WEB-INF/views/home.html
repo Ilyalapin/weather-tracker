@@ -17,15 +17,12 @@
 
     <link rel="short cut icon" th:href="@{resources/img/icon.png}" type="icon">
 </head>
-
 <body>
-
 <div class="header2">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous">
     </script>
-
     <div class="container-center">
         <div class="row">
             <div class="col-md-4">
@@ -34,98 +31,40 @@
 
             <div class="col-md-4">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                    <form action="/user-search" method="get">
+                    <form action="/guest-search" method="get">
                         <input class="search" placeholder="Enter location name"
                                type="text" id="name"
                                name="name" required
                                title="Name location must contain only letters ">
                         <input class="btn-search" type="submit" value="Search">
-                        <input type="hidden" name="login" th:value="${login}">
                     </form>
-
-                    <div class="error" th:if="${error}" style="color: red;">
-                        <span th:text="${error}"></span>
-                    </div>
                 </div>
+                <div class="error" th:if="${error}" style="color: red;">
+                    <span th:text="${error}"></span>
+                </div>
+
             </div>
 
             <div class="col-md-4">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                        <span th:text="${login}">User Name</span>
+                        <span>Guest</span>
                     </button>
                     <ul class="dropdown-menu">
                         <li>
-                            <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop1">
-                                Sign Out
-                            </button>
+                            <form action="/sign-in" method="get">
+                                <button type="submit" class="dropdown-item">Sign In</button>
+                            </form>
                         </li>
                         <li>
-                            <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop2">
-                                Delete
-                            </button>
+                            <form action="/sign-up" method="get">
+                                <button type="submit" class="dropdown-item">Sign Up</button>
+                            </form>
                         </li>
                     </ul>
-                    <!--                    Для Sign Out-->
-                    <div class="modal fade" id="staticBackdrop1"
-                         data-bs-backdrop="static"
-                         data-bs-keyboard="false"
-                         tabindex="-1"
-                         aria-labelledby="staticBackdropLabel1"
-                         aria-hidden="true">
-
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel1"></h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Are you sure you want to sign out?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
-                                    </button>
-                                    <form action="/sign-out" method="post">
-                                        <button type="submit" class="btn btn-primary">Sign Out</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--                    Для Delete-->
-                    <div class="modal fade" id="staticBackdrop2"
-                         data-bs-backdrop="static"
-                         data-bs-keyboard="false"
-                         tabindex="-1"
-                         aria-labelledby="staticBackdropLabel2"
-                         aria-hidden="true">
-
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel2"></h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Are you sure you want to delete this account?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
-                                    </button>
-                                    <form action="/delete" method="post">
-                                        <button type="submit" class="btn btn-primary">Delete</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <h5 class="info-for-guest">You came as a guest.
+                        To view the forecast, log into you account or log up.</h5>
                 </div>
             </div>
         </div>
@@ -137,7 +76,6 @@
                 <div class="guest-search-result" th:if="${name != null}">
                     <ul>
                         <li>
-                            <input type="hidden" name="login" th:value="${login}">
                             <section class="data">
                                 <table class="table">
                                     <thead class="result">
@@ -145,11 +83,12 @@
                                         <td>Forecast for today</td>
                                     </tr>
                                     <tr class="column">
-                                        <td>Temp: <b th:utext="${forecast.getMain().getTemp()}"></b></td>
-                                        <td>Feels like: <b th:utext="${forecast.getMain().getFeels_like()}"></b></td>
-                                        <td>Humidity: <b th:utext="${forecast.getMain().getHumidity()}"></b></td>
-                                        <td>Pressure: <b th:utext="${forecast.getMain().getPressure()}"></b></td>
-                                        <td>Wind speed: <b th:utext="${forecast.getWind().getSpeed()}"></b></td>
+                                        <td>
+                                            <div class="temp">
+                                                <span>Temp:</span>
+                                                <b th:utext="${forecast.getMain().getTemp()}"></b>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr class="column">
                                         <td>
@@ -172,7 +111,7 @@
                                         </td>
                                         <td>
                                             <div class="info-row">
-                                                <span>Lon:</span>
+                                                <span>Long:</span>
                                                 <b th:utext="${forecast.getCoord().getLon()}"></b>
                                             </div>
                                         </td>
@@ -180,10 +119,10 @@
                                     </thead>
                                 </table>
                             </section>
-                            <input class="btn-add" type="submit" value="Add">
                         </li>
                     </ul>
                 </div>
+
             </div>
             <div class="col-md-4">
             </div>

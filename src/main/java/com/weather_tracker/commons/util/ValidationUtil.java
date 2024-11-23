@@ -1,6 +1,5 @@
 package com.weather_tracker.commons.util;
 
-
 import com.weather_tracker.commons.exception.InvalidParameterException;
 import com.weather_tracker.dto.UserRequestDto;
 
@@ -23,6 +22,21 @@ public class ValidationUtil {
                     " one uppercase letter," +
                     " one special character " +
                     "and contain from 6 to 20 characters");
+        }
+    }
+
+    public static void isValid(String name) {
+        if (!name.matches("^[A-Z][a-zA-Z]*(\s[A-Z][a-zA-Z]*)*$")) {
+            throw new InvalidParameterException("Name must contain only english letters and begin with a capital letter. Example: Sant Peterburg");
+        }
+        if (name.isEmpty()) {
+            throw new InvalidParameterException("Missing parameter - name");
+        }
+    }
+
+    public static void validate(String sessionId) {
+        if (sessionId == null || sessionId.isEmpty()) {
+            throw new InvalidParameterException("Cookies have expired, please sign in again");
         }
     }
 }

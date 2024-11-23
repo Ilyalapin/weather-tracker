@@ -19,15 +19,9 @@ import java.util.UUID;
 
 @Slf4j
 @Controller
-public class SignInController {
-    protected UserService userService;
-    protected SessionService sessionService;
-    protected CookieService cookieService;
-
-    public SignInController(CookieService cookieService, SessionService sessionService, UserService userService) {
-        this.cookieService = cookieService;
-        this.sessionService = sessionService;
-        this.userService = userService;
+public class SignInController extends BaseAuthenticationController {
+    protected SignInController(UserService userService, SessionService sessionService, CookieService cookieService) {
+        super(userService, sessionService, cookieService);
     }
 
     @GetMapping("/sign-in")

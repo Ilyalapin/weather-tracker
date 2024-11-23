@@ -11,52 +11,30 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ValidationUtilTest {
     private UserRequestDto userDto;
 
-    @Nested
-    class CheckingValidationLogin {
 
-        @BeforeEach
-        public void setUp() {
-            userDto = new UserRequestDto();
-            userDto.setPassword("Qwerty!123");
-        }
-
-
-        @Test
-        public void shouldGetAnInvalidParameterException_missingLogin() {
-            userDto.setLogin("");
-            assertThrows(InvalidParameterException.class, () -> ValidationUtil.validate(userDto));
-        }
-
-
-        @Test
-        public void shouldGetAnInvalidParameterException_invalidLogin() {
-            userDto.setLogin("Qw");
-            assertThrows(InvalidParameterException.class, () -> ValidationUtil.validate(userDto));
-        }
+    @BeforeEach
+    public void setUp() {
+        userDto = new UserRequestDto();
+        userDto.setPassword("Qwerty!123");
     }
 
 
-    @Nested
-    class CheckingValidationPassword {
+    @Test
+    public void shouldGetAnInvalidParameterException_missingLogin() {
+        userDto.setLogin("");
+        assertThrows(InvalidParameterException.class, () -> ValidationUtil.validate(userDto));
 
-        @BeforeEach
-        public void setUpUser() {
-            userDto = new UserRequestDto();
-            userDto.setLogin("Qwerty");
-        }
-
-        @Test
-        public void shouldGetAnInvalidParameterException_missingPassword() {
-
-            userDto.setPassword("");
-            assertThrows(InvalidParameterException.class, () -> ValidationUtil.validate(userDto));
-        }
+        userDto.setLogin("Qw");
+        assertThrows(InvalidParameterException.class, () -> ValidationUtil.validate(userDto));
+    }
 
 
-        @Test
-        public void shouldGetAnInvalidParameterException_invalidPassword() {
-            userDto.setPassword("qwerty");
-            assertThrows(InvalidParameterException.class, () -> ValidationUtil.validate(userDto));
-        }
+    @Test
+    public void shouldGetAnInvalidParameterExceptionIfInvalidPassword() {
+        userDto.setPassword("");
+        assertThrows(InvalidParameterException.class, () -> ValidationUtil.validate(userDto));
+
+        userDto.setPassword("qwerty");
+        assertThrows(InvalidParameterException.class, () -> ValidationUtil.validate(userDto));
     }
 }

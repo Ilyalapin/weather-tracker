@@ -15,6 +15,7 @@ body {
     justify-content: center;
     background-color: white;
     border-radius: 10px;
+    border: 2px solid black;
     margin-left: 90px;
     padding: 50px 30px;
 }
@@ -47,16 +48,25 @@ body {
 
 /* WEATHER TRACKER */
 .header2 {
-    margin-top: 30px;
-
+    padding-top: 30px;
+    font-family: 'Roboto', sans-serif;
+    background-image: url(../img/sign.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
 }
 
 .weather-tracker {
-    color: #1F75FE;
+    color: white;
+    text-shadow:
+            -1px -1px 0 black,
+            1px -1px 0 black,
+            -1px  1px 0 black,
+            1px  1px 0 black;
 }
 
 .btn-search {
-    background-color: #1F75FE;
+    margin-left: 20px;
 }
 
 .col-md-4 {
@@ -70,16 +80,157 @@ body {
 
 .search,
 .btn-search,
-.btn-sign-out {
-    border-radius: 8px;
-    border: 1px solid gray;
+.btn-sign-out ,
+.btn-primary {
+    border-radius: 6px;
+    border: 1px solid black;
     font-weight: 400;
     font-size: 20px;
     margin-top: 5px;
+    padding: 4px;
 }
 
 .btn-sign-out,
-.btn-search {
+.btn-search,
+.btn-primary {
+    /*background-color: #1F75FE;*/
+    background-color: white;
+    color: black;
+}
+
+.info-for-guest{
+    color: gray;
+    position: fixed;
+    bottom: 20px;
+    left: 49%;
+    transform: translateX(-49%);
+    padding: 10px;
+}
+.btn-add{
     background-color: #1F75FE;
     color: white;
+    justify-content: center;
+    border-radius: 6px;
+    border: 1px solid white;
+    font-weight: 400;
+    font-size: 20px;
 }
+
+/*HOME*/
+.guest-search-result{
+padding: 20px;
+    display: flex;
+    flex-wrap: wrap; /* Позволяет элементам переноситься на следующую строку */
+    justify-content: center; /* Центрирует элементы по горизонтали */
+}
+
+.guest-search-result ul {
+    list-style-type: none; /* Убираем маркеры списка */
+    padding: 0; /* Убираем отступы */
+}
+
+.guest-search-result li {
+    /*width: 100px;*/
+    flex: 0 1 50px;
+    border: 2px solid #fff; /* Белая рамка */
+    border-radius: 5px; /* Закругленные углы */
+    margin: 10px 0; /* Отступы между элементами */
+    padding: 10px; /* Внутренние отступы */
+    color: black; /* Цвет текста белый */
+    font-weight: 400;
+    font-size: 20px;
+    background-color: #fff; /* Цвет фона для элементов списка */
+}
+.guest-search-result li span {
+    display: block; /* Каждое поле на новой строке */
+}
+.guest-search-result ul h3 {
+    color: white;
+}
+
+
+.data{
+    font-weight: 150;
+    font-size: 17px;
+}
+
+.forecast,
+.forecast2 td{
+    text-align: center;
+    font-weight: 400;
+    font-size: 30px;
+}
+
+/*.forecast2 td{*/
+/*    text-align: center;*/
+/*    font-weight: 400;*/
+/*    font-size: 30px;*/
+/*}*/
+
+.table {
+    width: 100%; /* Устанавливаем ширину таблицы на 100% */
+    border-collapse: collapse; /* Убираем промежутки между ячейками */
+}
+
+.result th {
+    text-align: center; /* Центрируем заголовок таблицы */
+    padding: 10px; /* Добавляем отступы для заголовка */
+}
+
+.result td {
+    text-align: center; /* Центрируем содержимое ячеек */
+    padding: 10px; /* Добавляем отступы для ячеек */
+}
+
+.result tr {
+    border-bottom: 1px solid #ddd; /* Добавляем разделитель между строками */
+}
+
+.result td b {
+    display: block; /* Делаем значения блочными элементами, чтобы они были на новой строке */
+}
+
+
+.column{
+    display: flex; /* Используем flexbox для выравнивания ячеек */
+    text-align: center;
+}
+/*.column{*/
+/*    padding-left: 20px;*/
+/*    margin-left: 20px;*/
+/*}*/
+
+.column td {
+    flex: 1; /* Каждая ячейка занимает равную долю доступного пространства */
+    text-align: center; /* Центрируем текст внутри ячеек */
+    padding: 10px; /* Добавляем отступы для ячеек */
+}
+
+/*.cell-content {*/
+/*    display: flex; !* Используем flexbox внутри ячейки *!*/
+/*    justify-content: center; !* Центрируем содержимое внутри ячейки *!*/
+/*    align-items: center; !* Выравниваем содержимое по центру по вертикали *!*/
+/*}*/
+
+.error{
+    font-weight: 500;
+    font-size: 50px;
+    margin-top: 250px;
+}
+
+
+.info-row {
+    justify-content: space-between; /* Распределяем пространство между элементами */
+    margin-bottom: 20px; /* Отступ между строками */
+    text-align: center;
+}
+
+.info-row span,.info-row b {
+    flex: 1; /*  занимает равное пространство */
+}
+
+/*.info-row b {*/
+/*    flex: 1; !* Значение занимает равное пространство *!*/
+/*}*/
+
+

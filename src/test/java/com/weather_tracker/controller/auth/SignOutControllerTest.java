@@ -2,12 +2,10 @@ package com.weather_tracker.controller.auth;
 
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
-import com.weather_tracker.service.auth.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -18,6 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -42,9 +41,9 @@ public class SignOutControllerTest {
 
     @Test
     void signInShouldOpenToSignInPage() throws Exception {
-        mockMvc.perform(get("/sign-out"))
+        mockMvc.perform(post("/sign-out"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/sign-in"));
+                .andExpect(redirectedUrl("/home"));
     }
 }

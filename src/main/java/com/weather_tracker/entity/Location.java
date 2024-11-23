@@ -24,7 +24,7 @@ public class Location {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
     @Column
     private Double latitude;

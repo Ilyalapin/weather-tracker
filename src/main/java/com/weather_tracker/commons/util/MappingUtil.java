@@ -11,4 +11,5 @@ public class MappingUtil {
     public static User convertToEntity(UserRequestDto userDto) {
         return MODEL_MAPPER.map(userDto, User.class);
     }
+
 }

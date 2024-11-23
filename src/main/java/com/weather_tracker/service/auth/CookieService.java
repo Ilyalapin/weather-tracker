@@ -12,8 +12,8 @@ public class CookieService {
 
     public void save(HttpServletResponse response, UUID session) {
         Cookie cookie = new Cookie("sessionId", session.toString());
-        cookie.setMaxAge(60 * 5);
-//        cookie.setMaxAge(60 * 60 * 24);
+//        cookie.setMaxAge(20);
+        cookie.setMaxAge(60 * 60 * 24);
         response.addCookie(cookie);
     }
 
@@ -28,17 +28,5 @@ public class CookieService {
         } catch (NotFoundException e) {
             throw new NotFoundException("Cookie not found");
         }
-    }
-
-
-    public boolean isValid(String sessionId, Cookie[] cookies) {
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (sessionId.equals(cookie.getValue()) && cookie.getValue() != null) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }

@@ -1,8 +1,7 @@
-package com.weather_tracker.service;
+package com.weather_tracker.service.auth;
 
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
-import com.weather_tracker.service.auth.CookieService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +16,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import static org.mockito.Mockito.verify;
@@ -48,7 +46,7 @@ public class CookieServiceTest {
 
         assertEquals("sessionId", addedCookie.getName());
         assertEquals(sessionId.toString(), addedCookie.getValue());
-        assertEquals(60, addedCookie.getMaxAge());
+        assertEquals(60*60*24, addedCookie.getMaxAge());
     }
 
     @Test

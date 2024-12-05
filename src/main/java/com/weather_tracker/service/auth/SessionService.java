@@ -51,11 +51,14 @@ public class SessionService {
         }
     }
 
+    public User findBySessionId(String sessionId) {
+       try {
+           Session session = findById(UUID.fromString(sessionId));
+           return session.getUserId();
 
-    public String findUserLogin(String sessionId) {
-        Session session = findById(UUID.fromString(sessionId));
-        User user = session.getUserId();
-        return user.getLogin();
+       } catch (NotFoundException e) {
+           throw new NotFoundException("User not found");
+       }
     }
 
 

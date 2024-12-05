@@ -1,4 +1,4 @@
-package com.weather_tracker.service;
+package com.weather_tracker.service.auth;
 
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
@@ -6,7 +6,6 @@ import com.weather_tracker.commons.exception.InvalidParameterException;
 import com.weather_tracker.commons.exception.NotFoundException;
 import com.weather_tracker.dto.UserRequestDto;
 import com.weather_tracker.entity.User;
-import com.weather_tracker.service.auth.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

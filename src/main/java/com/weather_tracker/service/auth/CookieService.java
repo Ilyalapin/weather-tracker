@@ -12,7 +12,6 @@ public class CookieService {
 
     public void save(HttpServletResponse response, UUID session) {
         Cookie cookie = new Cookie("sessionId", session.toString());
-//        cookie.setMaxAge(20);
         cookie.setMaxAge(60 * 60 * 24);
         response.addCookie(cookie);
     }

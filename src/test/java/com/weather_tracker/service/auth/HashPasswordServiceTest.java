@@ -1,9 +1,8 @@
-package com.weather_tracker.service;
+package com.weather_tracker.service.auth;
 
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
 import com.weather_tracker.commons.exception.InvalidParameterException;
-import com.weather_tracker.service.auth.HashPasswordService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;

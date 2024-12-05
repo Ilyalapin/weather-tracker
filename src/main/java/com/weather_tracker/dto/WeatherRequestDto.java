@@ -14,6 +14,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherRequestDto {
 
+    private int index;
+
     @JsonProperty("weather")
     private List<WeatherDto> weather;
 
@@ -33,7 +35,7 @@ public class WeatherRequestDto {
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class WeatherDto{
+    public static class WeatherDto{
         private String main;
         private String description;
     }
@@ -46,7 +48,7 @@ public class WeatherRequestDto {
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class MainDto{
+    public static class MainDto{
         private Integer temp;
         private Integer feels_like;
         private Integer temp_min;
@@ -57,7 +59,7 @@ public class WeatherRequestDto {
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class WindDto{
+    public static class WindDto{
         private Integer speed;
         private Integer deg;
         private Integer gust;
@@ -65,7 +67,7 @@ public class WeatherRequestDto {
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class SysDto{
+    public static class SysDto{
         private String country;
     }
 }

@@ -25,14 +25,16 @@ public class ValidationUtil {
         }
     }
 
-    public static void isValid(String name) {
-        if (!name.matches("^[A-Z][a-zA-Z]*(\s[A-Z][a-zA-Z]*)*$")) {
-            throw new InvalidParameterException("Name must contain only english letters and begin with a capital letter. Example: Sant Peterburg");
+    public static boolean isValid(String name) {
+        if (!name.matches("^[a-zA-Z]+(\s[a-zA-Z]+)*$")) {
+            throw new InvalidParameterException("Name must contain only english letters. There should not be any special characters before or after the name");
         }
         if (name.isEmpty()) {
             throw new InvalidParameterException("Missing parameter - name");
         }
+        return true;
     }
+
 
     public static void validate(String sessionId) {
         if (sessionId == null || sessionId.isEmpty()) {

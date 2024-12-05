@@ -11,10 +11,10 @@ CREATE TABLE locations
     id        SERIAL PRIMARY KEY,
     name      VARCHAR NOT NULL,
     user_id   INTEGER NOT NULL,
-    latitute   DECIMAL(40, 35),
-    longitude DECIMAL(40, 35),
+    latitude   NUMERIC(12, 4),
+    longitude NUMERIC(12, 4),
     FOREIGN KEY (user_id) REFERENCES users (id),
-    UNIQUE (User_Id, latitute, longitude)
+    UNIQUE (User_Id, latitude, longitude)
 );
 
 

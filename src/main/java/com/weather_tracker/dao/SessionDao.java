@@ -23,7 +23,7 @@ public class SessionDao extends BaseDao<Session> {
     public Optional<Session> findById(UUID id) {
         org.hibernate.Session session = sessionFactory.getCurrentSession();
         if (session == null){
-            log.error("Invalid parameter: user not found");
+            log.error("Invalid parameter: session not found");
             return Optional.empty();
         }
         return Optional.ofNullable(session.get(Session.class, id));
@@ -34,6 +34,5 @@ public class SessionDao extends BaseDao<Session> {
     public void deleteById(UUID id) {
         org.hibernate.Session session = sessionFactory.getCurrentSession();
         session.remove(session.get(Session.class, id));
-
     }
 }

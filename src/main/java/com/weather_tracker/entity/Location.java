@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -26,9 +27,16 @@ public class Location {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column
-    private Double latitude;
+    @Column(name = "latitude")
+    private Double lat;
 
-    @Column
-    private Double longitude;
+    @Column(name = "longitude")
+    private Double lon;
+
+    public Location(User user, String name, Double lat, Double lon) {
+        this.user = user;
+        this.name = name;
+        this.lat = lat;
+        this.lon = lon;
+    }
 }

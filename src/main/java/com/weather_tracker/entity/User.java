@@ -14,8 +14,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@Table(name = "users")
-//@Table(name = "users", indexes = {@Index(name = "idx_login", columnList = "login")})
+@Table(name = "users", indexes = {@Index(name = "idx_login", columnList = "login")})
 public class User {
 
     @Id
@@ -34,7 +33,6 @@ public class User {
         this.password = password;
     }
 
-//    @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
-//    private List<Location> locations = new ArrayList<>();
-
+    @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Location> locations = new ArrayList<>();
 }

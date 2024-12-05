@@ -25,13 +25,6 @@ public class Session {
     @JoinColumn(name = "user_id")
     private User userId;
 
-
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
-
-
-//    public Session(User user, LocalDateTime expiresAt) {
-//        this.user = user;
-//        this.expiresAt = expiresAt;
-//    }
 }

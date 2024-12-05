@@ -20,10 +20,10 @@ public class DeleteController extends BaseAuthenticationController {
 
 
     @PostMapping("/delete")
-    public String deleteAccount(@CookieValue(value = "sessionId", required = false) String sessionId,
-                                HttpServletRequest req,
-                                HttpServletResponse resp,
-                                Model model) {
+    public String delete(@CookieValue(value = "sessionId", required = false) String sessionId,
+                         HttpServletRequest req,
+                         HttpServletResponse resp,
+                         Model model) {
         try {
             ValidationUtil.validate(sessionId);
 

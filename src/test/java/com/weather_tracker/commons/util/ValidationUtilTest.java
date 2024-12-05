@@ -3,7 +3,6 @@ package com.weather_tracker.commons.util;
 import com.weather_tracker.commons.exception.InvalidParameterException;
 import com.weather_tracker.dto.UserRequestDto;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

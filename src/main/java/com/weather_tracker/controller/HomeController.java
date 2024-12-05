@@ -1,8 +1,8 @@
 package com.weather_tracker.controller;
 
+import com.weather_tracker.commons.util.FormatingUserInputUtil;
 import com.weather_tracker.controller.auth.BaseAuthenticationController;
-import com.weather_tracker.dto.LocationByDirectGeocodingDto;
-import com.weather_tracker.dto.WeatherRequestDto;
+import com.weather_tracker.dto.WeatherResponseDto;
 import com.weather_tracker.service.OpenWeatherMapApiService;
 import com.weather_tracker.service.auth.CookieService;
 import com.weather_tracker.service.auth.SessionService;
@@ -30,15 +30,14 @@ public class HomeController extends BaseAuthenticationController {
     }
 
     @GetMapping("/guest-search")
-    public String searchLocation(@RequestParam("name") String name,
-                                 RedirectAttributes redirectAttributes,
-                                 Model model) {
+    public String search(@RequestParam("name") String name,
+                         RedirectAttributes redirectAttributes,
+                         Model model) {
         try {
-            List<LocationByDirectGeocodingDto> locations = weatherApiService.findByName(name);
-            List<WeatherRequestDto> forecasts = weatherApiService.findByCoordinates(locations);
+            List<WeatherResponseDto> forecasts = weatherApiService.getByName(name);
 
             model.addAttribute("forecasts", forecasts);
-            model.addAttribute("name", name);
+            model.addAttribute("name", FormatingUserInputUtil.format(name));
             return "home";
 
         } catch (Exception e) {

@@ -1,15 +1,7 @@
-### Get weather by name
-GET https://api.openweathermap.org/data/2.5/weather?lat=55.7504461&lon=37.6174943&appid=be547cc62b530e8649df005fbb8520f4&units=metric
-
-####
-
-
-#GET https://api.openweathermap.org/geo/1.0/direct?lat=55.7522&lon=37.6156&appid=be547cc62b530e8649df005fbb8520f4&units=metric
-
-#######
+GET https://api.openweathermap.org/data/2.5/weather?lat=59.9387&lon=30.3162&appid=be547cc62b530e8649df005fbb8520f4&units=metric
+###
 GET https://api.openweathermap.org/geo/1.0/direct?q=Moscow&limit=5&appid=be547cc62b530e8649df005fbb8520f4&units=metric
 ###
-
 GET https://api.openweathermap.org/geo/1.0/direct?q=Sant-Peterburg&limit=5&appid=be547cc62b530e8649df005fbb8520f4&units=metric
 
 

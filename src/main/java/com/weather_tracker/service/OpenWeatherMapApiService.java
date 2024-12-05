@@ -4,11 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weather_tracker.commons.exception.NotFoundException;
-import com.weather_tracker.commons.util.ValidationUtil;
-import com.weather_tracker.dto.LocationByDirectGeocodingDto;
+import com.weather_tracker.commons.util.FormatingUserInputUtil;
+import com.weather_tracker.commons.util.MappingUtil;
+import com.weather_tracker.dto.LocationRequestDto;
 import com.weather_tracker.dto.WeatherRequestDto;
+import com.weather_tracker.dto.WeatherResponseDto;
+import com.weather_tracker.entity.Location;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -17,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Slf4j
+@Component
 public class OpenWeatherMapApiService {
     private static final String API_KEY = System.getenv("API_KEY");
     private static final String WEATHER_API_URL = "https://api.openweathermap.org" + "/data/2.5/weather";
@@ -44,17 +49,14 @@ public class OpenWeatherMapApiService {
     }
 
 
-    public List<LocationByDirectGeocodingDto> findByName(String name) throws JsonProcessingException {
-        ValidationUtil.isValid(name);
-
-        String formattedName = name.replace(" ", "-");
+    public List<LocationRequestDto> findByName(String name) throws JsonProcessingException {
+        String formattedName = FormatingUserInputUtil.format(name);
 
         String request = createForGeocodingRequest(formattedName);
         String response = getDataByRequest(request);
 
-        List<LocationByDirectGeocodingDto> locations = objectMapper
-                .readValue(response, new TypeReference<List<LocationByDirectGeocodingDto>>() {
-                });
+        List<LocationRequestDto> locations = objectMapper
+                .readValue(response, new TypeReference<>() {});
 
         if (locations.isEmpty()) {
             log.error("Location by name:{} not found", name);
@@ -64,16 +66,29 @@ public class OpenWeatherMapApiService {
     }
 
 
-    public List<WeatherRequestDto> findByCoordinates(List<LocationByDirectGeocodingDto> locations) throws JsonProcessingException {
-        List<WeatherRequestDto> forecasts = new ArrayList<>();
+    public List<WeatherResponseDto> getByLocations(List<LocationRequestDto> locations) throws JsonProcessingException {
+        List<WeatherResponseDto> forecasts = new ArrayList<>();
 
-        for (LocationByDirectGeocodingDto location : locations) {
+        for (LocationRequestDto location : locations) {
             String request = createForWeatherRequest(location.getLat(), location.getLon());
             String response = getDataByRequest(request);
 
-            WeatherRequestDto weatherRequest = objectMapper.readValue(response, WeatherRequestDto.class);
-            forecasts.add(weatherRequest);
+            WeatherRequestDto requestDto = objectMapper.readValue(response, WeatherRequestDto.class);
+
+            WeatherResponseDto responseDto = MappingUtil.convertToDto(requestDto);
+            forecasts.add(responseDto);
         }
+        return forecasts;
+    }
+
+
+    public List<WeatherResponseDto>getByName(String name) throws JsonProcessingException {
+        List<LocationRequestDto> locations = findByName(name);
+        List<WeatherResponseDto> forecasts = getByLocations(locations);
+        for (int i = 0; i < forecasts.size(); i++) {
+            forecasts.get(i).setIndex(i);
+        }
+
         return forecasts;
     }
 
@@ -85,5 +100,18 @@ public class OpenWeatherMapApiService {
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(request, HttpMethod.GET, requestEntity, String.class);
         return responseEntity.getBody();
+    }
+
+    public WeatherResponseDto getByLocation(Location location){
+        try {
+            String request = createForWeatherRequest(location.getLat(), location.getLon());
+            String response = getDataByRequest(request);
+
+            WeatherRequestDto weatherRequest = objectMapper.readValue(response, WeatherRequestDto.class);
+
+            return MappingUtil.convertToDto(weatherRequest);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error while parsing JSON", e);
+        }
     }
 }

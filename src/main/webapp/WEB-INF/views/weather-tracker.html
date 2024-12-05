@@ -145,17 +145,17 @@
                                         <td>Forecast for today</td>
                                     </tr>
                                     <tr class="column">
-                                        <td>Temp: <b th:utext="${forecast.getMain().getTemp()}"></b></td>
-                                        <td>Feels like: <b th:utext="${forecast.getMain().getFeels_like()}"></b></td>
-                                        <td>Humidity: <b th:utext="${forecast.getMain().getHumidity()}"></b></td>
-                                        <td>Pressure: <b th:utext="${forecast.getMain().getPressure()}"></b></td>
-                                        <td>Wind speed: <b th:utext="${forecast.getWind().getSpeed()}"></b></td>
+                                        <td>Temp:<br><br> <b th:utext="${forecast.getTemp()}"></b></td>
+                                        <td>Feels like:<b th:utext="${forecast.getFeelsLike()}"></b></td>
+                                        <td>Humidity:<br><br> <b th:utext="${forecast.getHumidity()}"></b></td>
+                                        <td>Pressure:<br><br> <b th:utext="${forecast.getPressure()}"></b></td>
+                                        <td>Wind speed: <b th:utext="${forecast.getSpeed()}"></b></td>
                                     </tr>
                                     <tr class="column">
                                         <td>
                                             <div class="info-row">
                                                 <span>Country:</span>
-                                                <b th:utext="${forecast.getSys().getCountry()}"></b>
+                                                <b th:utext="${forecast.getCountry()}"></b>
                                             </div>
                                         </td>
                                         <td>
@@ -167,20 +167,24 @@
                                         <td>
                                             <div class="info-row">
                                                 <span>Lat:</span>
-                                                <b th:utext="${forecast.getCoord().getLat()}"></b>
+                                                <b th:utext="${forecast.getLat()}"></b>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="info-row">
                                                 <span>Lon:</span>
-                                                <b th:utext="${forecast.getCoord().getLon()}"></b>
+                                                <b th:utext="${forecast.getLon()}"></b>
                                             </div>
                                         </td>
                                     </tr>
                                     </thead>
                                 </table>
                             </section>
-                            <input class="btn-add" type="submit" value="Add">
+                            <form action="/add-location" method="post">
+                                <input type="hidden" name="locationIndex" th:value="${forecast.getIndex()}">
+                                <input type="hidden" name="name" th:value="${name}">
+                                <button class="btn-add" type="submit">Add</button>
+                            </form>
                         </li>
                     </ul>
                 </div>
@@ -191,6 +195,74 @@
             </div>
         </div>
     </div>
+
+    <div class="container-center2">
+        <div class="row">
+            <div class="col-md-4" th:each="savedForecast : ${savedForecasts}">
+                <div class="guest-search-result" th:if="${savedForecast != null}">
+                    <ul>
+                        <li>
+                            <input type="hidden" name="login" th:value="${login}">
+                            <section class="data">
+                                <table class="table">
+                                    <thead class="result">
+                                    <tr class="forecast2">
+                                        <td>Forecast for today</td>
+                                    </tr>
+                                    <tr class="column">
+                                        <td>Temp: <b th:utext="${savedForecast.getTemp()}"></b></td>
+                                        <td>Feels like: <b th:utext="${savedForecast.getFeelsLike()}"></b></td>
+                                        <td>Humidity: <b th:utext="${savedForecast.getHumidity()}"></b></td>
+                                        <td>Pressure: <b th:utext="${savedForecast.getPressure()}"></b></td>
+                                        <td>Wind speed: <b th:utext="${savedForecast.getSpeed()}"></b></td>
+                                    </tr>
+                                    <tr class="column">
+                                        <td>
+                                            <div class="info-row">
+                                                <span>Country:</span>
+                                                <b th:utext="${savedForecast.getCountry()}"></b>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="info-row">
+                                                <span>Sity:</span>
+                                                <b th:utext="${savedForecast.getName()}"></b>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="info-row">
+                                                <span>Lat:</span>
+                                                <b th:utext="${savedForecast.getLat()}"></b>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="info-row">
+                                                <span>Lon:</span>
+                                                <b th:utext="${savedForecast.getLon()}"></b>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </section>
+                            <form action="/delete-location" method="post">
+                                <input type="hidden" name="lat" th:value="${savedForecast.getLat()}">
+                                <input type="hidden" name="lon" th:value="${savedForecast.getLon()}">
+                                <input type="hidden" name="name" th:value="${savedForecast.getName()}">
+
+                                <button class="btn-add" type="submit">Delete</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

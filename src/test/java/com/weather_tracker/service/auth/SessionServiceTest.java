@@ -1,4 +1,4 @@
-package com.weather_tracker.service;
+package com.weather_tracker.service.auth;
 
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
@@ -6,8 +6,6 @@ import com.weather_tracker.commons.exception.NotFoundException;
 import com.weather_tracker.dto.UserRequestDto;
 import com.weather_tracker.entity.Session;
 import com.weather_tracker.entity.User;
-import com.weather_tracker.service.auth.SessionService;
-import com.weather_tracker.service.auth.UserService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +60,7 @@ public class SessionServiceTest {
     void shouldFindUserLoginBySessionId() {
         user = userService.save(userDto);
         session = sessionService.save(user);
-        String userLogin = sessionService.findUserLogin(String.valueOf(session));
+        String userLogin = sessionService.findBySessionId(String.valueOf(session)).getLogin();
 
         assertEquals("login", userLogin);
     }

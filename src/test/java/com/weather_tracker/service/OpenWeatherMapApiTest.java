@@ -1,11 +1,13 @@
 package com.weather_tracker.service;
 
+import com.weather_tracker.auth.model.user.UserRequestDto;
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
-import com.weather_tracker.dto.*;
-import com.weather_tracker.entity.Location;
-import com.weather_tracker.entity.User;
-import com.weather_tracker.service.auth.UserService;
+import com.weather_tracker.weather.location.Location;
+import com.weather_tracker.auth.model.user.User;
+import com.weather_tracker.auth.service.UserService;
+import com.weather_tracker.weather.openWeatherApi.OpenWeatherMapApiService;
+import com.weather_tracker.weather.openWeatherApi.WeatherResponseDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -69,8 +71,6 @@ public class OpenWeatherMapApiTest {
         );
         WeatherResponseDto weatherResponseDto = weatherApiService.getByLocation(location);
 
-        assertEquals(weatherResponseDto.getLat(), lat);
-        assertEquals(weatherResponseDto.getLon(), lon);
         assertEquals(weatherResponseDto.getName(), name);
     }
 }

@@ -1,15 +1,13 @@
 package com.weather_tracker.service.auth;
 
+import com.weather_tracker.auth.service.UserService;
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
 import com.weather_tracker.commons.exception.InvalidParameterException;
 import com.weather_tracker.commons.exception.NotFoundException;
-import com.weather_tracker.dto.UserRequestDto;
-import com.weather_tracker.entity.User;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import com.weather_tracker.auth.model.user.UserRequestDto;
+import com.weather_tracker.auth.model.user.User;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -51,6 +49,7 @@ public class UserServiceTest {
 
     @Test
     void shouldFindUserByPersonalData() {
+
         assertNotNull(user);
         user = userService.findByPersonalData(login, password);
         assertEquals(login, user.getLogin());

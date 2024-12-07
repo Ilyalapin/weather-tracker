@@ -88,7 +88,7 @@ public class SpringConfig implements WebMvcConfigurer {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.weather_tracker.entity");
+        sessionFactory.setPackagesToScan("com.weather_tracker");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }

@@ -1,5 +1,6 @@
 package com.weather_tracker.service.auth;
 
+import com.weather_tracker.auth.service.CookieService;
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
 import jakarta.servlet.http.Cookie;

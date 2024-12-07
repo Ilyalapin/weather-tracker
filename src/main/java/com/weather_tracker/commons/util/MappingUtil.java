@@ -1,9 +1,9 @@
 package com.weather_tracker.commons.util;
 
-import com.weather_tracker.dto.UserRequestDto;
-import com.weather_tracker.dto.WeatherRequestDto;
-import com.weather_tracker.dto.WeatherResponseDto;
-import com.weather_tracker.entity.User;
+import com.weather_tracker.auth.model.user.UserRequestDto;
+import com.weather_tracker.weather.openWeatherApi.WeatherRequestDto;
+import com.weather_tracker.weather.openWeatherApi.WeatherResponseDto;
+import com.weather_tracker.auth.model.user.User;
 import org.modelmapper.ModelMapper;
 
 public class MappingUtil {

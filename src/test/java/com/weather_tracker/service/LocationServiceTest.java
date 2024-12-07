@@ -4,18 +4,17 @@ import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
 import com.weather_tracker.commons.exception.InvalidParameterException;
 import com.weather_tracker.commons.exception.NotFoundException;
-import com.weather_tracker.dao.LocationDao;
-import com.weather_tracker.dto.LocationRequestDto;
-import com.weather_tracker.dto.UserRequestDto;
-import com.weather_tracker.entity.Location;
-import com.weather_tracker.entity.User;
-import com.weather_tracker.service.auth.CookieService;
-import com.weather_tracker.service.auth.SessionService;
-import com.weather_tracker.service.auth.UserService;
+import com.weather_tracker.weather.location.LocationDao;
+import com.weather_tracker.weather.location.LocationRequestDto;
+import com.weather_tracker.auth.model.user.UserRequestDto;
+import com.weather_tracker.weather.location.Location;
+import com.weather_tracker.auth.model.user.User;
+import com.weather_tracker.auth.service.CookieService;
+import com.weather_tracker.auth.service.SessionService;
+import com.weather_tracker.auth.service.UserService;
+import com.weather_tracker.weather.location.LocationService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -72,6 +71,7 @@ public class LocationServiceTest {
                 lon
         );
     }
+
 
     @Test
     void shouldSaveLocation(){

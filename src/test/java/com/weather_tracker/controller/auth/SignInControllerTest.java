@@ -2,8 +2,8 @@ package com.weather_tracker.controller.auth;
 
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
-import com.weather_tracker.dto.UserRequestDto;
-import com.weather_tracker.service.auth.UserService;
+import com.weather_tracker.auth.model.user.UserRequestDto;
+import com.weather_tracker.auth.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -55,7 +55,7 @@ public class SignInControllerTest {
 
 
     @Test
-    void shouldRedirectToWeatherTrackerIfPersonalDataIsValid() throws Exception {
+    void shouldRedirectToUserPageIfPersonalDataIsValid() throws Exception {
         String login = "User";
         String password = "Password!123";
 
@@ -67,7 +67,7 @@ public class SignInControllerTest {
                         .param("password", password))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/weather-tracker"));
+                .andExpect(redirectedUrl("/user-page"));
     }
 
     @Test

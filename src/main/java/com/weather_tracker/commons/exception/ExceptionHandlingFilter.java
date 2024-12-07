@@ -2,7 +2,7 @@ package com.weather_tracker.commons.exception;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.weather_tracker.dto.ErrorResponseDto;
+import com.weather_tracker.commons.ErrorResponseDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebFilter;

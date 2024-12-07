@@ -1,7 +1,7 @@
 package com.weather_tracker.commons.util;
 
 import com.weather_tracker.commons.exception.InvalidParameterException;
-import com.weather_tracker.dto.UserRequestDto;
+import com.weather_tracker.auth.model.user.UserRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

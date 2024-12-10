@@ -25,7 +25,7 @@ public class WeatherResponseDto {
 
     private String country;
 
-    private double lat;
+    private Double lat;
 
-    private double lon;
+    private Double lon;
 }

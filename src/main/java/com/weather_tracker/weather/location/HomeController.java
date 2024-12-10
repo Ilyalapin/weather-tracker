@@ -18,10 +18,9 @@ import java.util.List;
 @Controller
 @Slf4j
 public class HomeController extends BaseController {
-    OpenWeatherMapApiService weatherApiService = new OpenWeatherMapApiService();
 
-    protected HomeController(SessionService sessionService, CookieService cookieService) {
-        super(sessionService, cookieService);
+    public HomeController(SessionService sessionService, CookieService cookieService, OpenWeatherMapApiService weatherApiService) {
+        super(sessionService, cookieService, weatherApiService);
     }
 
     @GetMapping("/home")

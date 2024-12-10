@@ -21,6 +21,7 @@ import java.util.UUID;
 @Slf4j
 @Controller
 public class SignInController extends BaseController {
+
     protected SignInController(UserService userService, SessionService sessionService, CookieService cookieService) {
         super(userService, sessionService, cookieService);
     }

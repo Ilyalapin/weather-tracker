@@ -16,7 +16,7 @@ import lombok.Setter;
 @Table(name = "locations",
         uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "latitude", "longitude"}))
 public class Location {
-@Id
+    @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

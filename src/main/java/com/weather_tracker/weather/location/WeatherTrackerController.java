@@ -12,6 +12,7 @@ import com.weather_tracker.weather.openWeatherApi.OpenWeatherMapApiService;
 import com.weather_tracker.weather.openWeatherApi.WeatherResponseDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,14 @@ import java.util.UUID;
 @Slf4j
 @Controller
 public class WeatherTrackerController extends BaseController {
-    OpenWeatherMapApiService weatherApiService = new OpenWeatherMapApiService();
+    private final LocationService locationService;
 
-    public WeatherTrackerController(SessionService sessionService, CookieService cookieService, LocationService locationService) {
-        super(sessionService, cookieService, locationService);
+    @Autowired
+    public WeatherTrackerController(SessionService sessionService, CookieService cookieService,
+                                    OpenWeatherMapApiService openWeatherService, LocationService locationService) {
+        super(sessionService, cookieService, openWeatherService);
+        this.locationService = locationService;
     }
-
 
     @GetMapping("/user-page")
     public String doGet(@CookieValue(value = "sessionId", required = false) String sessionId,
@@ -106,14 +109,13 @@ public class WeatherTrackerController extends BaseController {
             locationService.save(locationRequestDto);
             return "redirect:/user-page";
 
-        } catch (InvalidParameterException e){
+        } catch (InvalidParameterException e) {
             return "redirect:/user-page";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/user-page";
         }
     }
-
 
 
     @PostMapping("/delete-location")

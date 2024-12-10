@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Slf4j
 @Controller
 public class SignOutController extends BaseController {
+
     protected SignOutController(SessionService sessionService, CookieService cookieService) {
         super(sessionService, cookieService);
     }

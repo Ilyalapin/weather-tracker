@@ -20,6 +20,7 @@ import java.util.UUID;
 @Slf4j
 @Controller
 public class SignUpController extends BaseController {
+
     protected SignUpController(UserService userService, SessionService sessionService, CookieService cookieService) {
         super(userService, sessionService, cookieService);
     }

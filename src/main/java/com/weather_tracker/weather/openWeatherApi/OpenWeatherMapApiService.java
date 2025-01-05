@@ -9,6 +9,7 @@ import com.weather_tracker.commons.util.MappingUtil;
 import com.weather_tracker.weather.location.Location;
 import com.weather_tracker.weather.location.LocationRequestDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -24,9 +25,16 @@ public class OpenWeatherMapApiService {
     private static final String API_KEY = System.getenv("API_KEY");
     private static final String WEATHER_API_URL = "https://api.openweathermap.org" + "/data/2.5/weather";
     private static final String GEOCODING_API_URL = "https://api.openweathermap.org" + "/geo/1.0/direct";
-    private final RestTemplate restTemplate = new RestTemplate();
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private final HttpHeaders headers = new HttpHeaders();
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+    private final HttpHeaders headers;
+
+    @Autowired
+    public OpenWeatherMapApiService(RestTemplate restTemplate, ObjectMapper objectMapper, HttpHeaders headers) {
+        this.restTemplate = restTemplate;
+        this.objectMapper = objectMapper;
+        this.headers = headers;
+    }
 
     public String createForWeatherRequest(double lat, double lon) {
         return String.valueOf(URI.create(WEATHER_API_URL
@@ -91,7 +99,7 @@ public class OpenWeatherMapApiService {
     }
 
 
-    protected String getDataByRequest(String request) {
+    public String getDataByRequest(String request) {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<Objects> requestEntity = new HttpEntity<>(headers);

@@ -1,10 +1,8 @@
-package com.weather_tracker.service.auth;
+package com.weather_tracker.auth.service;
 
 import com.weather_tracker.auth.model.session.Session;
 import com.weather_tracker.auth.model.user.User;
 import com.weather_tracker.auth.model.user.UserRequestDto;
-import com.weather_tracker.auth.service.SessionService;
-import com.weather_tracker.auth.service.UserService;
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
 import com.weather_tracker.commons.exception.NotFoundException;

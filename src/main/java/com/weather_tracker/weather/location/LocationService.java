@@ -75,9 +75,4 @@ public class LocationService {
             throw new NotFoundException("Error getting forecasts by index");
         }
     }
-
-    public void findByCoordinates(double lat, double lon) {
-        locationDao.findByCoordinates(lat, lon)
-                .orElseThrow(() -> new NotFoundException("Location with not found"));
-    }
 }

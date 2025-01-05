@@ -1,6 +1,6 @@
-package com.weather_tracker.service.auth;
+package com.weather_tracker.auth.service;
 
-import com.weather_tracker.auth.service.UserService;
+import com.weather_tracker.auth.model.user.UserDao;
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
 import com.weather_tracker.commons.exception.InvalidParameterException;
@@ -9,36 +9,47 @@ import com.weather_tracker.auth.model.user.UserRequestDto;
 import com.weather_tracker.auth.model.user.User;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestConfig.class, WebAppInitializer.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @WebAppConfiguration
 public class UserServiceTest {
-    private final UserService userService;
+
+    @Mock
+    UserDao userDao;
+    @Mock
+    User mockUser;
+    @InjectMocks
+    private UserService userService;
+
     private User user;
     private String login;
     private String password;
-    private final UserRequestDto userDto;
 
     @Autowired
     public UserServiceTest(UserService userService) {
         this.userService = userService;
-        this.userDto = new UserRequestDto();
     }
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
         login = "Login";
         password = "Password!123";
-        userDto.setPassword(password);
-        userDto.setLogin(login);
+        UserRequestDto userDto = new UserRequestDto(login, password);
+
+        when(userDao.save(user)).thenReturn(mockUser);
         user = userService.save(userDto);
     }
 
@@ -59,10 +70,10 @@ public class UserServiceTest {
     void shouldThrowNotFoundExceptionIfUserIsNotFound() {
         String testLogin = "login";
         String testPassword = "Password!123";
-        UserRequestDto testUserDto = new UserRequestDto(testLogin, testPassword);
 
-        User testUser = userService.save(testUserDto);
+        User testUser = userService.save(new UserRequestDto(testLogin, testPassword));
         userService.delete(testUser);
+
         assertThrows(NotFoundException.class, () -> userService.findByPersonalData(testUser.getLogin(), testUser.getPassword()));
     }
 
@@ -70,9 +81,7 @@ public class UserServiceTest {
     void shouldThrowExceptionWhenLoginAlreadyExist() {
         String password = "Password!12345";
 
-        UserRequestDto newUserDto = new UserRequestDto();
-        newUserDto.setPassword(password);
-        newUserDto.setLogin("Login");
+        UserRequestDto newUserDto = new UserRequestDto(login, password);
 
         assertThrows(InvalidParameterException.class, () -> userService.save(newUserDto));
     }

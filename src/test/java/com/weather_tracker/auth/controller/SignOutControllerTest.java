@@ -1,4 +1,4 @@
-package com.weather_tracker.controller.auth;
+package com.weather_tracker.auth.controller;
 
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;

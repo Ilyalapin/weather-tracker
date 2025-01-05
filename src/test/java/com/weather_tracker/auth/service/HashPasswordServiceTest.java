@@ -1,6 +1,5 @@
-package com.weather_tracker.service.auth;
+package com.weather_tracker.auth.service;
 
-import com.weather_tracker.auth.service.HashPasswordService;
 import com.weather_tracker.commons.config.TestConfig;
 import com.weather_tracker.commons.config.WebAppInitializer;
 import com.weather_tracker.commons.exception.InvalidParameterException;

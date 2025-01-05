@@ -9,7 +9,6 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 @Slf4j
 @Component
@@ -37,21 +36,5 @@ public class LocationDao extends BaseDao<Location> {
 
         session.remove(location);
         log.info("Deleted location at coordinates: lat={}, lon={}", lat, lon);
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<Location> findByCoordinates(double lat, double lon) {
-            org.hibernate.Session session = sessionFactory.getCurrentSession();
-            if (session == null) {
-                log.error("Invalid parameter: location not found");
-                return Optional.empty();
-            }
-            String hql = "FROM Location   WHERE lat = :latitude AND lon = :longitude";
-
-            Query<Location> query = session.createQuery(hql, Location.class);
-            query.setParameter("latitude", lat);
-            query.setParameter("longitude", lon);
-
-            return Optional.ofNullable(query.uniqueResult());
     }
 }

@@ -4,7 +4,6 @@ import com.weather_tracker.auth.service.CookieService;
 import com.weather_tracker.auth.service.SessionService;
 import com.weather_tracker.commons.BaseController;
 import com.weather_tracker.commons.exception.InvalidParameterException;
-import com.weather_tracker.commons.util.ValidationUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +27,6 @@ public class SignOutController extends BaseController {
                           HttpServletResponse resp,
                           Model model) {
         try {
-            ValidationUtil.validate(sessionId);
-
             log.trace("Attempting to find cookies");
             sessionService.signOut(sessionId);
 

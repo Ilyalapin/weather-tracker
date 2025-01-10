@@ -14,25 +14,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
 @Slf4j
 @Controller
+@RequestMapping("sign-in")
 public class SignInController extends BaseController {
 
     protected SignInController(UserService userService, SessionService sessionService, CookieService cookieService) {
         super(userService, sessionService, cookieService);
     }
 
-    @GetMapping("/sign-in")
+    @GetMapping
     public String signIn() {
         return "sign-in";
     }
 
 
-    @PostMapping("/sign-in")
+    @PostMapping
     public String signIn(@RequestParam("login") String login,
                          @RequestParam("password") String password,
                          HttpServletResponse resp,

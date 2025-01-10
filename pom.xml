@@ -93,6 +93,13 @@
     </dependency>
 
       <dependency>
+          <groupId>jakarta.annotation</groupId>
+          <artifactId>jakarta.annotation-api</artifactId>
+          <version>3.0.0</version>
+      </dependency>
+
+
+      <dependency>
           <groupId>org.thymeleaf</groupId>
           <artifactId>thymeleaf-spring6</artifactId>
           <version>3.1.2.RELEASE</version>

@@ -4,6 +4,7 @@ import com.weather_tracker.auth.model.session.Session;
 import com.weather_tracker.auth.model.session.SessionDao;
 import com.weather_tracker.auth.model.user.User;
 import com.weather_tracker.commons.exception.DataBaseException;
+import com.weather_tracker.commons.exception.HttpSessionInvalidatedException;
 import com.weather_tracker.commons.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,27 +39,23 @@ public class SessionService {
 
 
     public Session findById(UUID uuid) {
-        return sessionDao.findById(uuid)
-                .orElseThrow(() -> new NotFoundException("Session with uuid: " + uuid + " not found"));
+        return sessionDao.findById(uuid);
     }
 
 
     public void delete(String sessionId) {
-        try {
-            sessionDao.deleteById(UUID.fromString(sessionId));
-        } catch (NotFoundException e) {
-            throw new NotFoundException("Session with uuid: " + sessionId + " not found");
-        }
+        sessionDao.deleteById(UUID.fromString(sessionId));
     }
 
-    public User findBySessionId(String sessionId) {
-       try {
-           Session session = findById(UUID.fromString(sessionId));
-           return session.getUserId();
 
-       } catch (NotFoundException e) {
-           throw new NotFoundException("User not found");
-       }
+    public User findBySessionId(String sessionId) {
+        try {
+            Session session = findById(UUID.fromString(sessionId));
+            return session.getUserId();
+
+        } catch (NullPointerException e) {
+            throw new HttpSessionInvalidatedException("Cookies have expired, please sign in again");
+        }
     }
 
 

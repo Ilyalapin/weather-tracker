@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WeatherResponseDto {
+public class ViewWeatherDto {
 
     private int index;
 

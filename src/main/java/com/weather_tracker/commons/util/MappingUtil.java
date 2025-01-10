@@ -1,8 +1,10 @@
 package com.weather_tracker.commons.util;
 
 import com.weather_tracker.auth.model.user.UserRequestDto;
-import com.weather_tracker.weather.openWeatherApi.WeatherRequestDto;
-import com.weather_tracker.weather.openWeatherApi.WeatherResponseDto;
+import com.weather_tracker.weather.location.Location;
+import com.weather_tracker.weather.location.LocationRequestDto;
+import com.weather_tracker.weather.openWeatherApi.OpenWeatherApiResponseDto;
+import com.weather_tracker.weather.openWeatherApi.ViewWeatherDto;
 import com.weather_tracker.auth.model.user.User;
 import org.modelmapper.ModelMapper;
 
@@ -12,17 +14,17 @@ public class MappingUtil {
     static {
         MODEL_MAPPER = new ModelMapper();
 
-        MODEL_MAPPER.typeMap(WeatherRequestDto.class, WeatherResponseDto.class)
-                .addMapping(WeatherRequestDto::getIndex, WeatherResponseDto::setIndex)
-                .addMapping(src -> src.getMain().getTemp(), WeatherResponseDto::setTemp)
-                .addMapping(src -> src.getMain().getFeels_like(), WeatherResponseDto::setFeelsLike)
-                .addMapping(src -> src.getMain().getHumidity(), WeatherResponseDto::setHumidity)
-                .addMapping(src -> src.getMain().getPressure(), WeatherResponseDto::setPressure)
-                .addMapping(src -> src.getWind().getSpeed(), WeatherResponseDto::setSpeed)
-                .addMapping(WeatherRequestDto::getName, WeatherResponseDto::setName)
-                .addMapping(src -> src.getSys().getCountry(), WeatherResponseDto::setCountry)
-                .addMapping(src -> src.getCoord().getLat(), WeatherResponseDto::setLat)
-                .addMapping(src -> src.getCoord().getLon(), WeatherResponseDto::setLon);
+        MODEL_MAPPER.typeMap(OpenWeatherApiResponseDto.class, ViewWeatherDto.class)
+                .addMapping(OpenWeatherApiResponseDto::getIndex, ViewWeatherDto::setIndex)
+                .addMapping(src -> src.getMain().getTemp(), ViewWeatherDto::setTemp)
+                .addMapping(src -> src.getMain().getFeels_like(), ViewWeatherDto::setFeelsLike)
+                .addMapping(src -> src.getMain().getHumidity(), ViewWeatherDto::setHumidity)
+                .addMapping(src -> src.getMain().getPressure(), ViewWeatherDto::setPressure)
+                .addMapping(src -> src.getWind().getSpeed(), ViewWeatherDto::setSpeed)
+                .addMapping(OpenWeatherApiResponseDto::getName, ViewWeatherDto::setName)
+                .addMapping(src -> src.getSys().getCountry(), ViewWeatherDto::setCountry)
+                .addMapping(src -> src.getCoord().getLat(), ViewWeatherDto::setLat)
+                .addMapping(src -> src.getCoord().getLon(), ViewWeatherDto::setLon);
     }
 
     public static User convertToEntity(UserRequestDto userDto) {
@@ -30,7 +32,11 @@ public class MappingUtil {
     }
 
 
-    public static WeatherResponseDto convertToDto(WeatherRequestDto weatherRequestDto) {
-        return MODEL_MAPPER.map(weatherRequestDto, WeatherResponseDto.class);
+    public static ViewWeatherDto convertToDto(OpenWeatherApiResponseDto openWeatherApiResponseDto) {
+        return MODEL_MAPPER.map(openWeatherApiResponseDto, ViewWeatherDto.class);
+    }
+
+    public static Location convertToEntity(LocationRequestDto locationRequestDto) {
+        return MODEL_MAPPER.map(locationRequestDto, Location.class);
     }
 }

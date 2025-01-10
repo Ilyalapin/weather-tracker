@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -33,11 +32,4 @@ public class Location {
 
     @Column(name = "longitude")
     private Double lon;
-
-    public Location(User user, String name, Double lat, Double lon) {
-        this.user = user;
-        this.name = name;
-        this.lat = lat;
-        this.lon = lon;
-    }
 }

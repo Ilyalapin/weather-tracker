@@ -26,7 +26,7 @@ public class ValidationUtil {
     }
 
     public static boolean isValid(String name) {
-        if (!name.matches("^[a-zA-Z]+(\s[a-zA-Z]+)*$")) {
+        if (!name.matches("^[a-zA-Z]+([-\s][a-zA-Z]+)*$")) {
             throw new InvalidParameterException("Name must contain only english letters. There should not be any special characters before or after the name");
         }
         if (name.isEmpty()) {

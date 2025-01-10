@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class WeatherRequestDto {
+public class OpenWeatherApiResponseDto {
 
     private int index;
 

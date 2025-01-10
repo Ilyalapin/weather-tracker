@@ -1,6 +1,7 @@
 package com.weather_tracker.commons.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +29,7 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan("com.weather_tracker")
-@PropertySource("classpath:hibernate.properties")
+@PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
@@ -104,10 +105,19 @@ public class SpringConfig implements WebMvcConfigurer {
         return transactionManager;
     }
 
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/", "classpath:/public/");
+    }
+
+    @Bean(initMethod = "migrate")
+    public Flyway flyway(DataSource dataSource) {
+        return Flyway.configure()
+                .dataSource(dataSource)
+                .locations("classpath:db/migration")
+                .validateOnMigrate(false)
+                .load();
     }
 
     @Bean

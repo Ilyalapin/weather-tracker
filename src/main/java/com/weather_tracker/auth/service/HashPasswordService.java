@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HashPasswordService {
 
-   public String hash(String password) {
+    public String hash(String password) {
         if (password == null || password.isEmpty()) {
             log.error("Password is null or empty");
             throw new InvalidParameterException("Password is null or empty");
@@ -17,7 +17,7 @@ public class HashPasswordService {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-    public  boolean isChecked(String password, String hashedPassword) {
+    public boolean isChecked(String password, String hashedPassword) {
         if (password == null || hashedPassword == null) {
             log.error("Password or hashed password is null");
 

@@ -11,6 +11,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 @Slf4j
 @Component
 public class UserService {
@@ -38,11 +39,8 @@ public class UserService {
     public User findByPersonalData(String login, String password) {
 
         log.info("Attempting to find user with login: {}", login);
-        User user = userDao.findByLogin(login)
-                .orElseThrow(() -> {
-                    log.error("User with login: {} not found", login);
-                    return new NotFoundException("User not found");
-                });
+        User user = userDao.findByLogin(login);
+
         log.info("User found successfully: {}", user);
 
         if (!(passwordService.isChecked(password, user.getPassword()))) {

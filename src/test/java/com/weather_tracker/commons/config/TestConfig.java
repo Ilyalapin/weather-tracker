@@ -1,10 +1,13 @@
 package com.weather_tracker.commons.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.flywaydb.core.Flyway;
 import org.springframework.context.annotation.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -45,7 +48,6 @@ public class TestConfig {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("com.weather_tracker");
-//        sessionFactory.setPackagesToScan("com.weather_tracker.entity");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
@@ -70,5 +72,12 @@ public class TestConfig {
     @Bean
     public HttpHeaders httpHeaders() {
         return new HttpHeaders();
+    }
+
+
+
+    @Bean
+    public Flyway flyway(DataSource dataSource) {
+        return Flyway.configure().dataSource(dataSource).load();
     }
 }

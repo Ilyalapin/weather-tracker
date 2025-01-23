@@ -1,115 +1,111 @@
-//package com.weather_tracker.weather.location;
-//
-//import com.weather_tracker.auth.model.user.User;
-//import com.weather_tracker.auth.model.user.UserRequestDto;
-//import com.weather_tracker.auth.service.UserService;
-//import com.weather_tracker.commons.config.TestConfig;
-//import com.weather_tracker.commons.config.WebAppInitializer;
-//import com.weather_tracker.commons.exception.NotFoundException;
-//import com.weather_tracker.weather.openWeatherApi.OpenWeatherMapApiService;
-//import com.weather_tracker.weather.openWeatherApi.ViewWeatherDto;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.TestInstance;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.MockitoAnnotations;
-//import org.springframework.test.context.ContextConfiguration;
-//import org.springframework.test.context.junit.jupiter.SpringExtension;
-//import org.springframework.test.context.web.WebAppConfiguration;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.Mockito.*;
-//
-//
-//@ExtendWith(SpringExtension.class)
-//@WebAppConfiguration
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-//@ContextConfiguration(classes = {TestConfig.class, WebAppInitializer.class})
-//public class LocationServiceTest {
-//    @Mock
-//    private LocationDao locationDao;
-//
-//    @Mock
-//    private OpenWeatherMapApiService openWeatherMapApiService;
-//
-//    @Mock
-//    UserService userService;
-//
-//    @InjectMocks
-//    private LocationService locationService;
-//    private LocationRequestDto locationRequestDto1;
-//    private Location location1;
-//    private Location location2 = new Location();
-//    private final User user = new User();
-//
-//    @BeforeEach
-//    void setUp() {
-//        MockitoAnnotations.openMocks(this);
-//        locationService = new LocationService(locationDao, openWeatherMapApiService);
-//        when(userService.save(any(UserRequestDto.class))).thenReturn(user);
-//        String name1 = "Sant Peterburg";
-//        String name2 = "Ryazan";
-//        double lat1 = 59.9387;
-//        double lon1 = 30.3162;
-//        double lat2 = 54.6296;
-//        double lon2 = 39.7425;
-//        locationRequestDto1 = new LocationRequestDto(
-//                user,
-//                name1,
-//                lat1,
-//                lon1
-//        );
-//        LocationRequestDto locationRequestDto2 = new LocationRequestDto(
-//                user,
-//                name2,
-//                lat2,
-//                lon2
-//        );
-//        location1 = locationService.save(locationRequestDto1);
-//        location2 = locationService.save(locationRequestDto2);
-//    }
-//
-//
-//    @Test
-//    void shouldSaveLocation() {
-//        assertEquals("Sant Peterburg", location1.getName());
-//        assertEquals(59.9387, location1.getLat(), 0);
-//        assertEquals(30.3162, location1.getLon(), 0);
-//    }
-//
-//
-//    @Test
-//    void shouldDeleteLocation() {
-//        locationService.delete(locationRequestDto1);
-//        doThrow(NotFoundException.class).when(locationDao).delete(locationRequestDto1.getUser(),locationRequestDto1.getLat(),locationRequestDto1.getLon());
-//    }
-//
-//
-//    @Test
-//    void shouldGetAllSavedLocations() {
-//        List<Location> locations = new ArrayList<>();
-//        locations.add(location1);
-//        locations.add(location2);
-//
-//        ViewWeatherDto forecast1 = new ViewWeatherDto();
-//        ViewWeatherDto forecast2 = new ViewWeatherDto();
-//
-//        when(openWeatherMapApiService.getByLocation(location1)).thenReturn(forecast1);
-//        when(openWeatherMapApiService.getByLocation(location2)).thenReturn(forecast2);
-//
-//        List<ViewWeatherDto> savedLocations = locationService.getSavedForecasts(locations);
-//
-//        assertEquals(2, savedLocations.size());
-//        assertEquals("Sant Peterburg", savedLocations.get(0).getName());
-//        assertEquals("Ryazan", savedLocations.get(1).getName());
-//
-//        verify(openWeatherMapApiService, times(1)).getByLocation(location1);
-//        verify(openWeatherMapApiService, times(1)).getByLocation(location2);
-//    }
-//}
+package com.weather_tracker.weather.location;
+
+import com.weather_tracker.auth.model.user.User;
+import com.weather_tracker.commons.exception.DataBaseException;
+import com.weather_tracker.commons.exception.InvalidParameterException;
+import com.weather_tracker.weather.openWeatherApi.OpenWeatherApiResponseDto;
+import com.weather_tracker.weather.openWeatherApi.OpenWeatherApiService;
+import com.weather_tracker.weather.openWeatherApi.ViewWeatherDto;
+import org.hibernate.exception.ConstraintViolationException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@ExtendWith(MockitoExtension.class)
+public class LocationServiceTest {
+    @InjectMocks
+    private LocationService locationService;
+    @Mock
+    private LocationDao locationDao;
+    @Mock
+    private OpenWeatherApiService openWeatherApiService;
+    String login = "SomeLogin";
+    String locationName = "SomeName";
+    Double lat = 20.00;
+    Double lon = 30.00;
+    User user = new User();
+    Location testLocation = new Location(1, locationName,user,lat,lon);
+
+    @Test
+    void saveSuccessfully() {
+        user.setLogin(login);
+        LocationRequestDto testLocationDto = new LocationRequestDto();
+        Mockito.when(locationDao.save(Mockito.any(Location.class))).thenReturn(testLocation);
+
+        Location location = locationService.save(testLocationDto);
+
+        Assertions.assertNotNull(location);
+        Assertions.assertEquals(location.getName(), locationName);
+        Assertions.assertEquals(location.getLat(), lat);
+        Assertions.assertEquals(location.getLon(), lon);
+        Assertions.assertEquals(location.getUser().getLogin(), login);
+
+        Mockito.verify(locationDao, Mockito.times(1)).save(Mockito.any(Location.class));
+    }
+
+    @Test
+    void shouldThrowInvalidParameterExceptionWhenSaveFails() {
+        LocationRequestDto testLocationDto = new LocationRequestDto();
+        Mockito.when(locationDao.save(Mockito.any(Location.class))).thenThrow(ConstraintViolationException.class);
+
+        Assertions.assertThrows(InvalidParameterException.class, () -> locationService.save(testLocationDto));
+    }
+
+
+    @Test
+    void deleteSuccessfully() {
+        locationService.delete(user,lat,lon);
+        Mockito.verify(locationDao, Mockito.times(1)).delete(user,lat,lon);
+
+    }
+
+    @Test
+    void shouldThrowDataBaseExceptionWhenDeleteFails() {
+        Mockito.doThrow(DataBaseException.class).when(locationDao).delete(user,lat,lon);
+        Assertions.assertThrows(DataBaseException.class, () -> locationService.delete(user,lat,lon));
+    }
+
+
+    @Test
+    void getByLocationsSuccessfully(){
+        Location testLocation1 = new Location(1,"name1",user,10.00,20.00);
+        Location testLocation2 = new Location(2,"name2",user,30.00,40.00);
+        Location testLocation3 = new Location(3,"name3",user,50.00,60.00);
+
+        List<Location> locations = new ArrayList<>();
+        locations.add(testLocation1);
+        locations.add(testLocation2);
+        locations.add(testLocation3);
+
+        OpenWeatherApiResponseDto testDto = new OpenWeatherApiResponseDto();
+        testDto.setName(locationName);
+
+        Mockito.when(openWeatherApiService.getByLocation(Mockito.any(Location.class))).thenReturn(testDto);
+
+        List<ViewWeatherDto> result = locationService.getByLocations(locations);
+
+        Assertions.assertEquals(3, result.size());
+        Assertions.assertEquals("name1", result.get(0).getName());
+        Assertions.assertEquals("name2", result.get(1).getName());
+        Assertions.assertEquals("name3", result.get(2).getName());
+
+        Mockito.verify(openWeatherApiService, Mockito.times(3)).getByLocation(Mockito.any(Location.class));
+    }
+
+
+    @Test
+    void shouldThrowDataBaseExceptionWhenGetByLocationsFails() {
+        List<Location> locations = new ArrayList<>();
+        locations.add(testLocation);
+
+        Mockito.when(openWeatherApiService.getByLocation((Mockito.any(Location.class)))).thenThrow(DataBaseException.class);
+        Assertions.assertThrows(DataBaseException.class, () -> locationService.getByLocations(locations));
+    }
+}
